@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GroupingSpec {
 
     @Test
-    public void partitionAdultsShouldSeparateKidsFromAdults() {
+    public void groupPeopleByNationality() {
         Person sara = new Person("Sara", 4, "Norwegian");
         Person viktor = new Person("Viktor", 40, "Serbian");
         Person eva = new Person("Eva", 42, "Norwegian");

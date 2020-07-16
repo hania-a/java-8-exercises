@@ -18,7 +18,7 @@ public class Grouping {
             if (!map.containsKey(person.getNationality())) {
                 map.put(person.getNationality(), new ArrayList<>());
             }
-            map.get(person.getNationality()).add(person);
+            map.get(person.getNationality()).add(person) ;
         }
         return map;
     }

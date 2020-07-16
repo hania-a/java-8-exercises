@@ -29,4 +29,5 @@ public class Person {
         return nationality;
     }
 
+    public void testMethod() {}
 }

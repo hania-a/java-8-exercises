@@ -11,7 +11,7 @@ public class FilterCollection {
     public static List<String> transform(List<String> collection) {
 
         return collection.stream()
-                .filter(item -> item.length() < 4)
+                .filter(item -> item.length() <4)
                 .collect(Collectors.toList());
 
     }

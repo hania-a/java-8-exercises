@@ -11,11 +11,6 @@ public class OldestPerson {
     public static Person getOldestPerson(List<Person> people) {
         return people.stream()
                 .max(Comparator.comparingInt(person -> person.getAge()))
-                .orElseGet(new Supplier<Person>() {
-                    @Override
-                    public Person get() {
-                        return null;
-                    }
-                });
+                .orElseGet(() -> null);
     }
 }

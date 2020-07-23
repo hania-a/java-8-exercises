@@ -8,6 +8,7 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static java8exercises.imperative.Partitioning.partitionAdults;
+import static java8exercises.imperative.Partitioning.partitionNames;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PartitioningSpec {

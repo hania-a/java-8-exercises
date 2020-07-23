@@ -1,19 +1,21 @@
 package java8exercises.imperative;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Supplier;
+
 import java8exercises.Person;
 
 public class OldestPerson {
 
     public static Person getOldestPerson(List<Person> people) {
-        Person oldestPerson = new Person("", 0);
-        for (Person person : people) {
-            if (person.getAge() > oldestPerson.getAge()) {
-                oldestPerson = person;
-            }
-        }
-        return oldestPerson;
+        return people.stream()
+                .max(Comparator.comparingInt(person -> person.getAge()))
+                .orElseGet(new Supplier<Person>() {
+                    @Override
+                    public Person get() {
+                        return null;
+                    }
+                });
     }
-
-
 }

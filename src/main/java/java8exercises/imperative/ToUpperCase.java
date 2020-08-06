@@ -1,7 +1,7 @@
 package java8exercises.imperative;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ToUpperCase {
 
@@ -9,11 +9,10 @@ public class ToUpperCase {
     }
 
     public static List<String> transform(List<String> collection) {
-        List<String> newCollection = new ArrayList<>();
-        for (String element : collection) {
-            newCollection.add(element.toUpperCase());
-        }
-        return newCollection;
+
+        return collection.stream()
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
     }
 
 

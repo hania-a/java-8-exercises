@@ -10,6 +10,8 @@ public class ReduceExercise1 {
         method1();
 
         method2();
+
+        method3();
     }
 
     /**
@@ -39,4 +41,18 @@ public class ReduceExercise1 {
         System.out.println("Method2: " + reduce.get());
     }
 
+    /**
+     * Produce a String that is all the words concatenated together, but with commas in between. E.g., the
+     * result should be "hi,hello,...". Note that there is no comma at the beginning, before "hi", and also no
+     * comma at the end, after the last word. Major hint: there are two versions of reduce discussed in the
+     * notes.
+     */
+    private static void method3() {
+        List<String> words = Arrays.asList("hi", "hello", "asad", "kaustubh", "danish", "B2", "ms");
+
+        String reduce = words.stream()
+                .reduce((intermediate, word) -> String.join(",", intermediate, word)).get();
+
+        System.out.println(reduce);
+    }
 }

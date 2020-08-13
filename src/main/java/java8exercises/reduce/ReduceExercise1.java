@@ -12,6 +12,8 @@ public class ReduceExercise1 {
         method2();
 
         method3();
+
+        method4();
     }
 
     /**
@@ -54,5 +56,18 @@ public class ReduceExercise1 {
                 .reduce((intermediate, word) -> String.join(",", intermediate, word)).get();
 
         System.out.println(reduce);
+    }
+
+    /**
+     * Find the total number of characters (i.e., sum of the lengths) of the strings in the List.
+     */
+    private static void method4() {
+        List<String> words = Arrays.asList("hi", "hello", "");
+
+        Optional<Integer> totalCharCount = words.stream()
+                .map(String::length)
+                .reduce((charCount, wordLength) -> charCount += wordLength);
+
+        System.out.println("Total number of characters: " + totalCharCount.get());
     }
 }

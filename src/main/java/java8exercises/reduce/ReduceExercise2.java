@@ -19,6 +19,8 @@ public class ReduceExercise2 {
         method4();
 
         method5();
+
+        method6();
     }
 
     /**
@@ -88,7 +90,14 @@ public class ReduceExercise2 {
     }
 
     /**
-     * Find the number of words that contain an 'h' using reduce().
+     * Find the total length of all words containing an 'h' using reduce().
      */
+    public static void method6() {
+        List<String> words = Arrays.asList("hi", "hello", "Hasad", "kaustubh", "danish", "B2", "ms");
+        int lengthOfAllWordsWith_h = words.stream()
+                .filter(word -> word.contains("h"))
+                .reduce(String::concat).orElseGet(()->"").length();
+        System.out.println("Total length of all words containing 'h': " + lengthOfAllWordsWith_h);
+    }
 
 }

@@ -3,9 +3,12 @@ package java8exercises.reduce;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+/**
+ * URL for the exercise
+ * http://www.java-programming.info/tutorial/pdf/java/exercises/exercises-streams-2.pdf
+*/
 
-public class ReduceExercise1 {
-
+public class ReduceExercise2 {
     public static void main(String[] args) {
         method1();
 
@@ -14,6 +17,8 @@ public class ReduceExercise1 {
         method3();
 
         method4();
+
+        method5();
     }
 
     /**
@@ -26,7 +31,7 @@ public class ReduceExercise1 {
 
         outputVal = words.stream()
                 .reduce((a, b) -> a.concat(b).toUpperCase());
-        System.out.println(outputVal);
+        System.out.println(outputVal.get());
     }
 
     /**
@@ -70,4 +75,20 @@ public class ReduceExercise1 {
 
         System.out.println("Total number of characters: " + totalCharCount.get());
     }
+
+    /**
+     * Find the number of words that contain an 'h' .
+     */
+    public static void method5() {
+        List<String> words = Arrays.asList("hi", "hello", "Hasad", "kaustubh", "danish", "B2", "ms");
+        long number = words.stream()
+                .filter(word -> word.contains("h"))
+                .count();
+        System.out.println("Total number of words that contain 'h': " + number);
+    }
+
+    /**
+     * Find the number of words that contain an 'h' using reduce().
+     */
+
 }

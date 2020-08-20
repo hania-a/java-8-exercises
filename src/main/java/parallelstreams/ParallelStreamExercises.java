@@ -22,7 +22,9 @@ public class ParallelStreamExercises {
 
 //        method6();
 
-        method6b();
+//        method6b();
+
+        method6c();
     }
 
     /**
@@ -80,6 +82,21 @@ public class ParallelStreamExercises {
         List<Double> doublesList = doubleList.limit(10)
                 .collect(Collectors.toList());
         System.out.println(doublesList);
+
+    }
+
+    /**
+     * Make an "infinite" stream that generates random doubles between 0 and 10. Use it to
+     * Make an array of 20 random doubles
+     */
+    static void method6c() {
+        Double[] array = Stream.generate(() -> new Random().nextDouble() * 10)
+                .limit(20)
+                .collect(Collectors.toList())
+                .toArray(new Double[20]);
+
+        for (Double d : array)
+            System.out.println(d);
 
     }
 }

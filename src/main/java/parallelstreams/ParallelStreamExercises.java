@@ -2,6 +2,7 @@ package parallelstreams;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -14,15 +15,17 @@ import java.util.stream.Stream;
  */
 public class ParallelStreamExercises {
 
+    static double[] veryLargeArray = new Random().doubles(100000000).toArray();
+
     public static void main(String[] args) {
 
-       // method1();
+        method1();
 
-        //method3();
+        method3();
 
-//        method6();
+        method6();
 
-//        method6b();
+        method6b();
 
         method6c();
     }
@@ -35,9 +38,6 @@ public class ParallelStreamExercises {
     private static void method1() {
 
         long start = System.currentTimeMillis();
-
-        double[] veryLargeArray = new Random().doubles(100000000).toArray();
- //       double[] veryLargeArray = new double[] {4.0, 16.0, 25.0};
 
         double sumOfSquareRoots = DoubleStream.of(veryLargeArray)
                 .reduce(0.0, (sumOfSquares, number) -> sumOfSquares += Math.sqrt(number));
@@ -54,11 +54,10 @@ public class ParallelStreamExercises {
 
         long start = System.currentTimeMillis();
 
-        double[] veryLargeArray = new Random().doubles(100000000).toArray();
-
-        double sumOfSquareRoots = DoubleStream.of(veryLargeArray)
+        double sumOfSquareRoots = Arrays.stream(veryLargeArray)
                 .parallel()
-                .reduce(0.0, (sumOfSquares, number) -> sumOfSquares += Math.sqrt(number));
+                .boxed()
+                .reduce(0.0, (sumOfSquares, number) -> sumOfSquares += Math.sqrt(number), Double::sum);
 
         System.out.println(sumOfSquareRoots);
 

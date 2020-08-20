@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
 /**
  * URL for the exercise
@@ -15,9 +16,11 @@ public class ParallelStreamExercises {
 
     public static void main(String[] args) {
 
-        method1();
+       // method1();
 
-        method3();
+        //method3();
+
+        method6();
     }
 
     /**
@@ -51,5 +54,14 @@ public class ParallelStreamExercises {
                 .reduce(0.0, (sumOfSquares, number) -> sumOfSquares += Math.sqrt(number), Double::sum);
 
         System.out.println(sumOfSquareRoots);
+    }
+
+    public static void method6()
+    {
+        Stream<Double> doubleList = Stream.generate(() -> new Random().nextDouble() * 10);
+
+        doubleList.limit(5)
+                .forEach(System.out::println);
+
     }
 }

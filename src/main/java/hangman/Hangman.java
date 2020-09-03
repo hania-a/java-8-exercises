@@ -37,7 +37,7 @@ public class Hangman {
         // update discovered
         int i = 0;
         String guessChar = guesses.blockingFirst();
-        for (char ch : "secret".toCharArray()) {
+        for (char ch : secretWord.blockingFirst().toCharArray()) {
             if ((ch + "").equals(guessChar)) {
                 discovered[i] = ch;
             }

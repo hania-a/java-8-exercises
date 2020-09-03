@@ -1,3 +1,5 @@
+package hangman;
+
 enum Part {
     HEAD,
     BODY,

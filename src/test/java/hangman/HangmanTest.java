@@ -1,3 +1,9 @@
+package hangman;
+
+import hangman.Hangman;
+import hangman.Output;
+import hangman.Part;
+import hangman.Status;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.disposables.Disposable;
@@ -41,7 +47,6 @@ public class HangmanTest {
         assertEquals(Status.PLAYING, init.status);
     }
 
-    @Ignore("Remove to run test")
     @Test
     public void firstGuess() {
         Observable<Output> result = hangman.play(

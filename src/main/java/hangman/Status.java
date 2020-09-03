@@ -1,3 +1,5 @@
+package hangman;
+
 enum Status {
     PLAYING,
     WIN,

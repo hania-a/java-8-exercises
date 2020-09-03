@@ -12,19 +12,20 @@ Please remove this comment when submitting your solution.
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 public class Hangman {
 
-    public Observable<Output> play(Observable<String> secret, Observable<String> e) {
+    public Observable<Output> play(Observable<String> secretWord, Observable<String> guesses) {
         Output myOutput = new Output(
-                secret.blockingFirst(),
-                "",
-                Set.of(""),
-                Set.of(""),
-                List.of(Part.BODY),
-                Status.LOSS
+                secretWord.blockingFirst(),
+                "______",
+                Collections.emptySet(),
+                Collections.emptySet(),
+                Collections.emptyList(),
+                Status.PLAYING
         );
         return Observable.fromArray(myOutput);
     }

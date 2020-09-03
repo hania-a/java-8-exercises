@@ -9,4 +9,12 @@ Please remove this comment when submitting your solution.
 
 */
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 
+public class Hangman {
+
+    public Observable<Output> play(Observable<String> secret, Observable<String> e) {
+        return Observable.empty();
+    }
+}

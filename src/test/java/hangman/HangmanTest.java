@@ -1,9 +1,5 @@
 package hangman;
 
-import hangman.Hangman;
-import hangman.Output;
-import hangman.Part;
-import hangman.Status;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.disposables.Disposable;
@@ -41,7 +37,7 @@ public class HangmanTest {
         assertNotNull(init);
         assertEquals("secret", init.secret);
         assertEquals("______", init.discovered);
-        assertEquals(Collections.emptySet(), init.guess);
+        assertEquals(Collections.emptySet(), init.successfulGuesses);
         assertEquals(Collections.emptySet(), init.misses);
         assertEquals(Collections.emptyList(), init.parts);
         assertEquals(Status.PLAYING, init.status);
@@ -54,13 +50,12 @@ public class HangmanTest {
             Observable.fromArray("e"));
         Output last = result.blockingLast();
         assertEquals("_e__e_", last.discovered);
-        assertEquals(Collections.singleton("e"), last.guess);
+        assertEquals(Collections.singleton("e"), last.successfulGuesses);
         assertEquals(Collections.emptySet(), last.misses);
         assertEquals(Collections.emptyList(), last.parts);
         assertEquals(Status.PLAYING, last.status);
     }
 
-    @Ignore("Remove to run test")
     @Test
     public void firstMiss() {
         Observable<Output> result = hangman.play(
@@ -68,13 +63,12 @@ public class HangmanTest {
             Observable.fromArray("a"));
         Output last = result.blockingLast();
         assertEquals("______", last.discovered);
-        assertEquals(Collections.emptySet(), last.guess);
+        assertEquals(Collections.emptySet(), last.successfulGuesses);
         assertEquals(Collections.singleton("a"), last.misses);
         assertEquals(Collections.singletonList(Part.HEAD), last.parts);
         assertEquals(Status.PLAYING, last.status);
     }
 
-    @Ignore("Remove to run test")
     @Test
     public void gameInProgress() {
         Observable<Output> result = hangman.play(
@@ -82,7 +76,7 @@ public class HangmanTest {
             Observable.fromArray("a", "e", "o", "s"));
         Output last = result.blockingLast();
         assertEquals("se__e_", last.discovered);
-        assertEquals(Set.of("e", "s"), last.guess);
+        assertEquals(Set.of("e", "s"), last.successfulGuesses);
         assertEquals(Set.of("a", "o"), last.misses);
         assertEquals(
             Arrays.asList(
@@ -100,7 +94,7 @@ public class HangmanTest {
             Observable.fromArray("a", "e", "o", "s", "c", "r", "g", "t"));
         Output last = result.blockingLast();
         assertEquals("secret", last.discovered);
-        assertEquals(Set.of("c", "e", "r", "s", "t"), last.guess);
+        assertEquals(Set.of("c", "e", "r", "s", "t"), last.successfulGuesses);
         assertEquals(Status.WIN, last.status);
     }
 
@@ -130,9 +124,9 @@ public class HangmanTest {
     public void consecutiveGames() {
         // This test setup is more complex because we have to order the emission of values in the
         // different observers.
-        // 1. Word observable receives the work to guess
+        // 1. Word observable receives the work to successfulGuesses
         // 2. Letter observable receives the various letters tried
-        // 3. Word observable receives the new word to guess
+        // 3. Word observable receives the new word to successfulGuesses
         // 4. Letter observable receiveds the letters for the second word
 
         // Emitters respectively for the word and letter observables
@@ -158,13 +152,13 @@ public class HangmanTest {
 
             Output first = results.get(0);
             assertEquals("secret", first.discovered);
-            assertEquals(Set.of("s", "e", "c", "r", "t"), first.guess);
+            assertEquals(Set.of("s", "e", "c", "r", "t"), first.successfulGuesses);
             assertEquals(Set.of("a", "o", "g"), first.misses);
             assertEquals(Status.WIN, first.status);
 
             Output second = results.get(1);
             assertEquals("abba", second.discovered);
-            assertEquals(Set.of("a", "b"), second.guess);
+            assertEquals(Set.of("a", "b"), second.successfulGuesses);
             assertEquals(Set.of("e", "s"), second.misses);
             assertEquals(Status.WIN, first.status);
         } finally {

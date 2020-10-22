@@ -1,4 +1,6 @@
-package hangman;/*
+package hangman;
+
+/*
 
 Since this exercise has a difficulty of > 4 it doesn't come
 with any starter implementation.
@@ -11,9 +13,7 @@ Please remove this comment when submitting your solution.
 
 import io.reactivex.Observable;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Hangman {
 
@@ -21,39 +21,35 @@ public class Hangman {
 
         char[] discovered = "_".repeat(secretWord.blockingFirst().length()).toCharArray();
 
-        Output myOutput = new Output(
-                secretWord.blockingFirst(),
-                String.valueOf(discovered),
-                Collections.emptySet(),
-                Collections.emptySet(),
-                Collections.emptyList(),
-                Status.PLAYING
-        );
+        Set<String> misses = new HashSet<>();
+        List<Part> parts = new ArrayList<>();
+        Set<String> successfulGuesses = new HashSet<>();
 
-        if (guesses.isEmpty().blockingGet()) {
-            return Observable.fromArray(myOutput);
-        }
-
-        // update discovered
-        int i = 0;
-        String guessChar = guesses.blockingFirst();
-        for (char ch : secretWord.blockingFirst().toCharArray()) {
-            if ((ch + "").equals(guessChar)) {
-                discovered[i] = ch;
+        guesses.subscribe((guessChar) -> {
+            // update discovered
+            int i = 0;
+            for (char ch : secretWord.blockingFirst().toCharArray()) {
+                if ((ch == guessChar.charAt(0))) {
+                    discovered[i] = ch;
+                }
+                i++;
             }
-            i++;
-        }
 
-        // update guesses
-        Set<String> set = new HashSet<>(){{add(guessChar);}};
+            // check whether discovered found the char
+            if (String.valueOf(discovered).contains(guessChar))
+                successfulGuesses.add(guessChar);
+            else {
+                misses.add(guessChar);
+                parts.add(Part.values()[parts.size()]);
+            }
+        });
 
         return Observable.fromArray(new Output(
                 secretWord.blockingFirst(),
                 String.valueOf(discovered),
-//                Collections.singleton(guessChar),
-                set,
-                Collections.emptySet(),
-                Collections.emptyList(),
+                successfulGuesses,
+                misses,
+                parts,
                 Status.PLAYING
         ));
     }

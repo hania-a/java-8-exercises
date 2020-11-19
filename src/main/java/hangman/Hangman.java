@@ -19,38 +19,51 @@ public class Hangman {
 
     public Observable<Output> play(Observable<String> secretWord, Observable<String> guesses) {
 
-        char[] discovered = "_".repeat(secretWord.blockingFirst().length()).toCharArray();
+        List<Output> outputs = new ArrayList<>();
 
-        Set<String> misses = new HashSet<>();
-        List<Part> parts = new ArrayList<>();
-        Set<String> successfulGuesses = new HashSet<>();
+        secretWord.subscribe((word) -> {
 
-        guesses.subscribe((guessChar) -> {
-            // update discovered
-            int i = 0;
-            for (char ch : secretWord.blockingFirst().toCharArray()) {
-                if ((ch == guessChar.charAt(0))) {
-                    discovered[i] = ch;
+            char[] discovered = "_".repeat(word.length()).toCharArray();
+
+            Set<String> misses = new HashSet<>();
+            List<Part> parts = new ArrayList<>();
+            Set<String> successfulGuesses = new HashSet<>();
+            Status status = Status.PLAYING;
+
+            guesses.subscribe((guessChar) -> {
+                // update discovered
+                int i = 0;
+                for (char ch : word.toCharArray()) {
+                    if ((ch == guessChar.charAt(0))) {
+                        discovered[i] = ch;
+                    }
+                    i++;
                 }
-                i++;
-            }
 
-            // check whether discovered found the char
-            if (String.valueOf(discovered).contains(guessChar))
-                successfulGuesses.add(guessChar);
-            else {
-                misses.add(guessChar);
-                parts.add(Part.values()[parts.size()]);
-            }
+                // check whether discovered found the char
+                if (String.valueOf(discovered).contains(guessChar))
+                    successfulGuesses.add(guessChar);
+                else {
+                    misses.add(guessChar);
+                    parts.add(Part.values()[parts.size()]);
+                }
+            });
+
+            if (!String.valueOf(discovered).contains("_"))
+                status = Status.WIN;
+            if (parts.size() >= 6)
+                status = Status.LOSS;
+
+            outputs.add(new Output(
+                    secretWord.blockingFirst(),
+                    String.valueOf(discovered),
+                    successfulGuesses,
+                    misses,
+                    parts,
+                    status
+            ));
         });
 
-        return Observable.fromArray(new Output(
-                secretWord.blockingFirst(),
-                String.valueOf(discovered),
-                successfulGuesses,
-                misses,
-                parts,
-                Status.PLAYING
-        ));
+        return Observable.fromIterable(outputs);
     }
 }

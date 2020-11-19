@@ -86,7 +86,6 @@ public class HangmanTest {
         assertEquals(Status.PLAYING, last.status);
     }
 
-    @Ignore("Remove to run test")
     @Test
     public void wonGame() {
         Observable<Output> result = hangman.play(
@@ -98,7 +97,6 @@ public class HangmanTest {
         assertEquals(Status.WIN, last.status);
     }
 
-    @Ignore("Remove to run test")
     @Test
     public void lostGame() {
         Observable<Output> result = hangman.play(
@@ -119,7 +117,6 @@ public class HangmanTest {
             last.parts);
     }
 
-    @Ignore("Remove to run test")
     @Test
     public void consecutiveGames() {
         // This test setup is more complex because we have to order the emission of values in the
@@ -131,6 +128,11 @@ public class HangmanTest {
 
         // Emitters respectively for the word and letter observables
         ObservableEmitter<String>[] emitters = new ObservableEmitter[2];
+
+
+        // Emitters: [ wordEmitter, guessEmmiter]
+        // T1:         secret     | a, e, o......
+        // T2:         abba
         Runnable emit = () -> {
             // Process sending the inputs in the right order
             emitters[0].onNext("secret");
@@ -139,6 +141,9 @@ public class HangmanTest {
             Stream.of("a", "e", "s", "b").forEach(emitters[1]::onNext);
             emitters[0].onComplete();
         };
+
+        // array of emitters: wordEmitter, guessEmitter
+        // emit: thread with implementation of values to be returned
         Observable<String> words = createWordObservable(emitters, emit);
         Observable<String> letters = createLetterObservable(emitters, emit);
         Observable<Output> outputs = hangman.play(words, letters);
@@ -166,6 +171,8 @@ public class HangmanTest {
         }
     }
 
+    // array of emitters: wordEmitter, guessEmitter
+    // emit: thread with implementation of values to be returned
     Observable createWordObservable(ObservableEmitter[] emitters, Runnable emit) {
         return Observable.create(
             emitter -> {
